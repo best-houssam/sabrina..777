@@ -2,331 +2,256 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Project2 - Microsoft Visual Studio</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sabrina 💗</title>
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Press+Start+2P&display=swap');
+
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
-    background: #1e1e1e;
+    background: #0d0010;
+    min-height: 100vh;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 100vh;
-    font-family: 'Consolas', 'Courier New', monospace;
-  }
-
-  /* Visual Studio outer window */
-  #vs-window {
-    width: 100vw;
-    max-width: 100vw;
-    min-height: 100vh;
-    box-shadow: 0 8px 60px rgba(0,0,0,0.9);
-    border: none;
-    border-radius: 0;
     overflow: hidden;
-    display: flex;
-    flex-direction: column;
+    font-family: 'Share Tech Mono', monospace;
   }
 
-  /* Title bar */
-  #title-bar {
-    background: #2d2d30;
-    padding: 8px 12px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid #3f3f46;
-  }
-  #title-bar .title {
-    color: #ccc;
-    font-size: 11px;
-    font-family: 'Segoe UI', sans-serif;
-  }
-  .win-btns {
-    display: flex;
-    gap: 8px;
-  }
-  .win-btn {
-    width: 12px; height: 12px;
-    border-radius: 50%;
-  }
-  .win-btn.close  { background: #f44; }
-  .win-btn.min    { background: #fa0; }
-  .win-btn.expand { background: #4c4; }
-
-  /* Menu bar */
-  #menu-bar {
-    background: #2d2d30;
-    padding: 4px 10px;
-    border-bottom: 1px solid #3f3f46;
-    display: flex;
-    gap: 10px;
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
-  #menu-bar::-webkit-scrollbar { display: none; }
-  .menu-item {
-    color: #ccc;
-    font-size: 11px;
-    font-family: 'Segoe UI', sans-serif;
-    opacity: 0.8;
-    white-space: nowrap;
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg, transparent, transparent 2px,
+      rgba(0,0,0,0.07) 2px, rgba(0,0,0,0.07) 4px
+    );
+    pointer-events: none;
+    z-index: 100;
   }
 
-  /* Console / output area */
-  #console-wrap {
-    background: #000;
-    position: relative;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
+  .grid-bg {
+    position: fixed; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,50,120,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,50,120,0.05) 1px, transparent 1px);
+    background-size: 28px 28px;
+    z-index: 0;
   }
 
-  /* Console title bar */
-  #console-title {
-    background: #007acc;
-    color: #fff;
-    font-family: 'Segoe UI', sans-serif;
-    font-size: 11px;
-    padding: 4px 12px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-shrink: 0;
-  }
-  #console-title .tab {
-    background: #000;
-    color: #fff;
-    padding: 2px 14px;
-    font-size: 11px;
-    border-top: 2px solid #007acc;
+  .scene {
+    position: relative; z-index: 10;
+    display: flex; flex-direction: column;
+    align-items: center; gap: 24px;
   }
 
-  #console-output {
-    padding: 8px 4px 8px 8px;
-    color: #ff2255;
-    line-height: 1.35;
-    white-space: pre;
-    font-family: 'Consolas', 'Courier New', monospace;
-    flex: 1;
-    overflow: hidden;
-    /* Font size scales with screen width */
-    font-size: clamp(5px, 2.2vw, 13px);
+  #heartCanvas {
+    image-rendering: pixelated;
+    filter:
+      drop-shadow(0 0 10px #ff1a6e)
+      drop-shadow(0 0 28px #ff0055)
+      drop-shadow(0 0 55px #cc0044);
+    animation: hb 1.2s steps(1) infinite;
   }
 
-  /* Done message */
-  #done-msg {
-    color: #ff6699;
-    font-size: clamp(10px, 2.5vw, 13px);
-    margin-top: 4px;
-    display: none;
-    white-space: pre;
-    padding: 0 8px;
-    font-family: 'Consolas', 'Courier New', monospace;
+  @keyframes hb {
+    0%,100%{ transform: scale(1); }
+    8%     { transform: scale(1.08); }
+    16%    { transform: scale(1); }
+    30%    { transform: scale(1.04); }
+    44%    { transform: scale(1); }
   }
 
-  #done-msg .name-line {
-    color: #ffffff;
-    font-size: clamp(12px, 3.5vw, 18px);
-    font-weight: bold;
-    letter-spacing: 3px;
-    text-shadow: 0 0 10px #ff2255;
+  .name-row {
+    display: flex; align-items: center; gap: 0;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 1.8rem;
+    color: #ff4d8d;
+    letter-spacing: 5px;
+    text-shadow:
+      0 0 8px #ff1a6e, 0 0 20px #ff0055,
+      0 0 40px #cc0044, 3px 3px 0 #5a0025;
+    min-height: 2.5rem;
+    animation: flicker 5s ease-in-out infinite;
   }
 
-  /* Status bar bottom */
-  #status-bar {
-    background: #007acc;
-    padding: 3px 12px;
-    display: flex;
-    gap: 12px;
-    flex-shrink: 0;
-  }
-  .status-item {
-    color: #fff;
-    font-family: 'Segoe UI', sans-serif;
-    font-size: 11px;
-    opacity: 0.9;
-    white-space: nowrap;
+  @keyframes flicker {
+    0%,94%,100%{ opacity:1; }
+    95%{ opacity:0.6; }
+    96%{ opacity:1; }
+    97%{ opacity:0.3; }
+    98%{ opacity:1; }
   }
 
-  /* Blinking cursor */
-  #cursor-blink {
+  .cursor {
     display: inline-block;
-    width: 6px;
-    height: 12px;
-    background: #ff2255;
-    animation: blink 0.7s step-end infinite;
+    width: 16px; height: 2rem;
+    background: #ff4d8d;
+    margin-left: 3px;
+    animation: blink 0.75s steps(1) infinite;
+    box-shadow: 0 0 10px #ff1a6e;
     vertical-align: middle;
-    margin-left: 1px;
   }
-  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
 
-  /* Path line at bottom of console */
-  #path-line {
-    color: #555;
-    font-size: clamp(9px, 2vw, 11px);
-    padding: 0 8px 10px;
-    background: #000;
-    font-family: 'Consolas', monospace;
-    display: none;
-    white-space: normal;
-    word-break: break-all;
+  @keyframes blink { 0%,49%{opacity:1} 50%,100%{opacity:0} }
+
+  .badge {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    color: rgba(255,100,150,0.45);
+    letter-spacing: 4px;
+  }
+
+  /* corner labels */
+  .corner {
+    position: fixed;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.55rem;
+    color: rgba(255,50,100,0.28);
+    letter-spacing: 2px;
+  }
+  .tl{top:14px;left:14px}
+  .tr{top:14px;right:14px}
+  .bl{bottom:14px;left:14px}
+  .br{bottom:14px;right:14px}
+
+  .pixel-p {
+    position: fixed;
+    animation: pfloat linear infinite;
+    z-index: 1; opacity: 0;
+  }
+  @keyframes pfloat {
+    0%  { transform:translateY(110vh) rotate(0deg); opacity:0; }
+    8%  { opacity:1; }
+    92% { opacity:0.7; }
+    100%{ transform:translateY(-10vh) rotate(180deg); opacity:0; }
   }
 </style>
 </head>
 <body>
 
-<div id="vs-window">
+<div class="grid-bg"></div>
+<div class="corner tl">SYS:ONLINE</div>
+<div class="corner tr">♥ 100%</div>
+<div class="corner bl">PWR:MAX</div>
+<div class="corner br">ERR:NONE</div>
+<div id="pixels"></div>
 
-  <!-- Title bar -->
-  <div id="title-bar">
-    <div class="win-btns">
-      <div class="win-btn close"></div>
-      <div class="win-btn min"></div>
-      <div class="win-btn expand"></div>
-    </div>
-    <div class="title">Project2 - Microsoft Visual Studio</div>
-    <div style="width:54px"></div>
+<div class="scene">
+  <canvas id="heartCanvas" width="320" height="290"></canvas>
+  <div class="name-row">
+    <span id="nameEl"></span><span class="cursor"></span>
   </div>
-
-  <!-- Menu bar -->
-  <div id="menu-bar">
-    <span class="menu-item">File</span>
-    <span class="menu-item">Edit</span>
-    <span class="menu-item">View</span>
-    <span class="menu-item">Project</span>
-    <span class="menu-item">Build</span>
-    <span class="menu-item">Debug</span>
-    <span class="menu-item">Tools</span>
-    <span class="menu-item">Extensions</span>
-    <span class="menu-item">Window</span>
-    <span class="menu-item">Help</span>
-  </div>
-
-
-  <!-- Console output -->
-  <div id="console-wrap">
-    <div id="console-title">
-      <span class="tab">Microsoft Visual Studio Debug</span>
-    </div>
-    <div id="console-output"><span id="heart-out"></span><span id="cursor-blink"></span>
-</div>
-    <div id="done-msg">
-      <br>
-      <span style="color:#ff4477">                    ✦  DONE WITH LOVE  ✦</span><br><br>
-      <span class="name-line">                        S A B R I N A</span><br>
-      <span style="color:#ff6699;font-size:12px">              &lt;3  forever in my heart  &lt;3</span>
-    </div>
-    <div id="path-line">C:\Users\Mahmoud\source\repos\Project2\x64\Debug\Project2.exe (process 9660) exited with code 0.<br>Press any key to close this window . . .</div>
-  </div>
-
-  <!-- Status bar -->
-  <div id="status-bar">
-    <span class="status-item">▶ Debug</span>
-    <span class="status-item">x64</span>
-    <span class="status-item">Project2</span>
-    <span class="status-item" id="status-progress">Ln 25, Col 1</span>
-  </div>
-
+  <div class="badge">[ &nbsp;❤ &nbsp;SABRINA &nbsp;❤ &nbsp;]</div>
 </div>
 
 <script>
-// Calculate columns based on screen width dynamically
-const fontSize = Math.max(5, Math.min(13, window.innerWidth * 0.022));
-const charWidth = fontSize * 0.6;
-const availableWidth = window.innerWidth - 16;
-const COLS = Math.floor(availableWidth / charWidth);
-const ROWS = 22;
+// ---- PIXEL HEART ----
+const canvas = document.getElementById('heartCanvas');
+const ctx = canvas.getContext('2d');
+ctx.imageSmoothingEnabled = false;
 
-const rows = [];
-for (let r = 0; r < ROWS; r++) {
-  let row = '';
-  const y = 1.5 - (r / (ROWS - 1)) * 3.0;
-  for (let c = 0; c < COLS; c++) {
-    const x = -1.5 + (c / (COLS - 1)) * 3.0;
-    const val = Math.pow(x*x + y*y - 1, 3) - (x*x * y*y*y);
-    row += (val <= 0) ? '1' : '0';
-  }
-  rows.push(row);
-}
+const SZ = 18; // pixel block size
 
-const positions = [];
-const grid = [];
-for (let r = 0; r < ROWS; r++) {
-  grid.push(Array(COLS).fill(' '));
-}
+// 16-wide heart grid, rows 0-13
+const half = [
+  [0,0,1,1,0,0,0,0],
+  [0,1,1,1,1,0,0,0],
+  [1,1,1,1,1,1,0,0],
+  [1,1,1,1,1,1,1,0],
+  [1,1,1,1,1,1,1,0],
+  [1,1,1,1,1,1,1,0],
+  [0,1,1,1,1,1,1,1],
+  [0,1,1,1,1,1,1,0],
+  [0,0,1,1,1,1,1,0],
+  [0,0,0,1,1,1,1,0],
+  [0,0,0,0,1,1,1,0],
+  [0,0,0,0,0,1,1,0],
+  [0,0,0,0,0,0,1,0],
+  [0,0,0,0,0,0,0,0],
+];
 
-for (let r = 0; r < ROWS; r++) {
-  for (let c = 0; c < COLS; c++) {
-    if (rows[r][c] === '1') {
-      positions.push({r, c});
+const grid = half.map(row => [...row, ...[...row].reverse()]);
+const ROWS = grid.length, COLS = grid[0].length;
+const offsetX = (canvas.width  - COLS * SZ) / 2;
+const offsetY = (canvas.height - ROWS * SZ) / 2 - 8;
+
+let frame = 0;
+function drawHeart() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  const glitch = frame % 110 < 3;
+
+  for (let r = 0; r < ROWS; r++) {
+    for (let c = 0; c < COLS; c++) {
+      if (!grid[r][c]) continue;
+
+      const px = offsetX + c * SZ + (glitch && Math.random()<0.06 ? (Math.random()<.5?-SZ:SZ) : 0);
+      const py = offsetY + r * SZ + (glitch && Math.random()<0.03 ? -SZ : 0);
+
+      const shine  = r < 4 && c >= 2 && c <= 5;
+      const isEdge = !grid[r+1]?.[c] || !grid[r][c+1] || !grid[r][c-1] || r===0;
+
+      ctx.fillStyle = shine ? '#ffb3cc' : isEdge ? '#cc1155' : '#ff2266';
+      ctx.fillRect(px, py, SZ - 1, SZ - 1);
+
+      if (shine) {
+        ctx.fillStyle = 'rgba(255,255,255,0.5)';
+        ctx.fillRect(px, py, 5, 5);
+      }
+
+      // subtle inner darker tone
+      if (!shine && !isEdge) {
+        ctx.fillStyle = 'rgba(0,0,0,0.12)';
+        ctx.fillRect(px + SZ/2, py + SZ/2, SZ/2 - 1, SZ/2 - 1);
+      }
     }
   }
+  frame++;
+  requestAnimationFrame(drawHeart);
 }
+drawHeart();
 
-const word = 'I LOVE YOU ';
-const out = document.getElementById('heart-out');
-const doneMsg = document.getElementById('done-msg');
-const pathLine = document.getElementById('path-line');
-const statusEl = document.getElementById('status-progress');
 
-let idx = 0;
+// ---- TYPEWRITER + ERASE ----
+const nameEl = document.getElementById('nameEl');
+const TEXT = 'Sabrina';
+let idx = 0, erasing = false, pause = 0;
 
-function renderGrid() {
-  let html = '';
-  for (let r = 0; r < ROWS; r++) {
-    html += grid[r].join('') + '\n';
+function tick() {
+  if (pause > 0) { pause--; setTimeout(tick, 90); return; }
+  if (!erasing) {
+    nameEl.textContent = TEXT.slice(0, idx);
+    idx++;
+    if (idx > TEXT.length) { pause = 22; erasing = true; }
+    setTimeout(tick, idx === 1 ? 400 : 130);
+  } else {
+    nameEl.textContent = TEXT.slice(0, idx);
+    idx--;
+    if (idx < 0) { pause = 14; erasing = false; idx = 0; }
+    setTimeout(tick, 90);
   }
-  out.textContent = html;
 }
+setTimeout(tick, 900);
 
-// Calculate center of heart for SABRINA label
-function getCenterCol() {
-  let minC = COLS, maxC = 0;
-  for (const {c} of positions) {
-    if (c < minC) minC = c;
-    if (c > maxC) maxC = c;
-  }
-  return Math.floor((minC + maxC) / 2);
+
+// ---- FLOATING PIXELS ----
+const colors = ['#ff1a6e','#ff4d8d','#ff0055','#ff80aa','#cc0044'];
+for (let p = 0; p < 28; p++) {
+  const el = document.createElement('div');
+  el.className = 'pixel-p';
+  const s = [4,6,8][Math.floor(Math.random()*3)];
+  const c = colors[Math.floor(Math.random()*colors.length)];
+  el.style.cssText = `
+    width:${s}px;height:${s}px;
+    background:${c};
+    left:${Math.random()*100}%;
+    box-shadow:0 0 5px ${c};
+    animation-duration:${(Math.random()*8+6).toFixed(1)}s;
+    animation-delay:${(Math.random()*12).toFixed(1)}s;
+  `;
+  document.getElementById('pixels').appendChild(el);
 }
-
-function padCenter(text, totalCols) {
-  const half = Math.floor((totalCols - text.length) / 2);
-  return ' '.repeat(Math.max(0, half)) + text;
-}
-
-function typeNext() {
-  if (idx >= positions.length) {
-    document.getElementById('cursor-blink').style.display = 'none';
-
-    // Build done message centered
-    const line1 = padCenter('✦  DONE WITH LOVE  ✦', COLS);
-    const line2 = padCenter('S A B R I N A', COLS);
-    const line3 = padCenter('<3  forever in my heart  <3', COLS);
-
-    doneMsg.innerHTML =
-      `<br><span style="color:#ff4477">${line1}</span>\n\n` +
-      `<span class="name-line">${line2}</span>\n` +
-      `<span style="color:#ff6699;font-size:clamp(10px,2.2vw,12px)">${line3}</span>`;
-    doneMsg.style.display = 'block';
-    pathLine.style.display = 'block';
-    statusEl.textContent = '● DONE';
-    return;
-  }
-
-  const {r, c} = positions[idx];
-  const ch = word[idx % word.length];
-  grid[r][c] = ch;
-  renderGrid();
-
-  idx++;
-  statusEl.textContent = `Ln ${r+1}, Col ${c+1}`;
-
-  setTimeout(typeNext, 14);
-}
-
-setTimeout(typeNext, 800);
 </script>
 </body>
 </html>
